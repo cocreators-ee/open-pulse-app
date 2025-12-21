@@ -1,0 +1,124 @@
+@forward "reset";
+@use "variables" as *;
+
+* {
+  color: $text-light;
+}
+
+body, html {
+  font-family: 'Merriweather Sans Variable', sans-serif;
+  font-size: 1rem;
+  transform: translate3d(0, 0, 0);
+  font-weight: 300;
+}
+
+button {
+  padding: 12px 24px;
+  margin: $spacing-1 0;
+
+  background: $blue-bright;
+  border: 1px solid $border-color;
+  border-radius: $radius-sm;
+
+  &:hover {
+    border-color: $border-light;
+  }
+
+  &:active {
+    border-color: $border-light;
+  }
+
+  &:disabled {
+    background: darken(desaturate($blue-bright, 50%), 10%);
+    border-color: darken(desaturate($border-color, 60%), 10%);
+  }
+}
+
+input {
+  background: $blue-dark;
+  border: 1px solid $border-color;
+  border-radius: $radius-sm;
+  width: 4rem;
+  text-align: center;
+  height: 2rem;
+}
+
+
+h1, h2, h3 {
+  text-align: center;
+  margin: $spacing-1 0 $spacing-3 0;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+b {
+  font-weight: 600;
+}
+
+p {
+  margin: $spacing-1 0;
+}
+
+a {
+  color: $text-link;
+
+  &:active, &:visited {
+    color: $text-link;
+  }
+}
+
+/*
+ * Animations
+ */
+
+@mixin keyframes($name){
+    @keyframes #{$name}{
+        @content;
+    }
+}
+
+@include keyframes(blink) {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@include keyframes(pulse) {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    $scale: 1.075;
+    transform: scale($scale, $scale);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+
+@include keyframes(spin) {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

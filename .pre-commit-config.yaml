@@ -1,0 +1,40 @@
+exclude: ^(.svelte-kit/|build/|node_modules/|\.idea/)
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Clean up trailing whitespace
+      - id: trailing-whitespace
+
+      # Ensure files have a proper EOL
+      - id: end-of-file-fixer
+
+      # All non-bat files should end with LF
+      - id: mixed-line-ending
+        name: Ensure LF endings on most files
+        args: ["--fix=lf"]
+        exclude: \.bat$
+
+      # Bat files should be CRLF ending
+      - id: mixed-line-ending
+        name: Ensure CFLF endings on Windows files
+        args: ["--fix=crlf"]
+        files: \.bat$
+
+      # Check for files that contain merge conflict strings
+      - id: check-merge-conflict
+
+      # Check for debugger imports and py37+ `breakpoint()` calls in python source
+      - id: debug-statements
+
+      # Check yaml files for parseable syntax
+      - id: check-yaml
+
+      # Prevent giant files from being committed
+      - id: check-added-large-files
+
+  - repo: https://github.com/rbubley/mirrors-prettier/
+    rev: v3.6.2
+    hooks:
+      - id: prettier
+        files: \.(js|ts|jsx|tsx|json|yaml|yml|md)$
