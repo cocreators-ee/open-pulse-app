@@ -5,7 +5,6 @@ Open Source application to connect to your Bluetooth Low Energy heart rate monit
 TODO:
 
 - Screen capture
-- Splash screens, icons, etc.
 - Build and release
 - Link to Google Play
 - AdMob
