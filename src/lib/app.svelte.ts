@@ -1,3 +1,4 @@
+import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob"
 import { BleClient, numberToUUID, type ScanResult } from "@capacitor-community/bluetooth-le"
 import { Preferences } from "@capacitor/preferences"
 import { goto } from "$app/navigation"
@@ -55,6 +56,7 @@ class App {
   showPrivacy: boolean = $state(false)
   showAdConsent: boolean = $state(false)
   showAds: boolean = $state(false)
+  adInitComplete: boolean = $state(false)
 
   hrMax: number = $state(180)
 
@@ -79,13 +81,27 @@ class App {
 
   async start() {
     // console.log("Starting app")
-
     await this.load()
 
     if (this.selectedDevice) {
       // Start connecting, but don't wait for it
       this.connect(this.selectedDevice).then(() => {})
     }
+
+    if (this.showAds) {
+      this.initAds().then(() => {})
+    }
+  }
+
+  async enableAds() {
+    this.showAds = true
+    await this.save()
+    await this.initAds()
+  }
+
+  async disableAds() {
+    this.showAds = false
+    await this.save()
   }
 
   async save() {
@@ -140,6 +156,45 @@ class App {
       // @ts-ignore
       this[key] = state[key]
     }
+  }
+
+  async initAds() {
+    if (this.adInitComplete) {
+      return
+    }
+
+    await AdMob.initialize()
+
+    const [trackingInfo, consentInfo] = await Promise.all([
+      AdMob.trackingAuthorizationStatus(),
+      AdMob.requestConsentInfo(),
+    ])
+
+    if (trackingInfo.status === "notDetermined") {
+      /**
+       * If you want to explain TrackingAuthorization before showing the iOS dialog,
+       * you can show the modal here.
+       * ex)
+       * const modal = await this.modalCtrl.create({
+       *   component: RequestTrackingPage,
+       * });
+       * await modal.present();
+       * await modal.onDidDismiss();  // Wait for close modal
+       **/
+
+      await AdMob.requestTrackingAuthorization()
+    }
+
+    const authorizationStatus = await AdMob.trackingAuthorizationStatus()
+    if (
+      authorizationStatus.status === "authorized" &&
+      consentInfo.isConsentFormAvailable &&
+      consentInfo.status === AdmobConsentStatus.REQUIRED
+    ) {
+      await AdMob.showConsentForm()
+    }
+
+    this.adInitComplete = true
   }
 
   async initBluetooth() {

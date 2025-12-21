@@ -1,6 +1,11 @@
 <script lang="ts">
   import { app } from '$lib/app.svelte.js';
   import Toggle from '$lib/Toggle.svelte';
+  import { AdMob } from '@capacitor-community/admob';
+
+  function showPrivacyOptionsForm() {
+      AdMob.showPrivacyOptionsForm();
+  }
 </script>
 
 <section>
@@ -25,9 +30,12 @@
       Show me ads to support the development of Open Source software like this.
     </p>
   </div>
+  <div class="setting centered">
+    <button onclick={showPrivacyOptionsForm}>Show AdMob privacy options</button>
+  </div>
   <div class="danger">
     <p>If something goes wrong and you want to reset the application state, you can use this.</p>
-    <div class="setting">
+    <div class="setting centered">
       <button class="reset" onclick={() => app.reset()}>Reset application</button>
     </div>
   </div>
@@ -55,6 +63,10 @@
       align-items: center;
       width: 7rem;
     }
+
+    &.centered {
+      justify-content: center;
+    }
   }
 
   .danger {
@@ -70,10 +82,6 @@
 
     p {
       margin: 0 $spacing-3;
-    }
-
-    .setting {
-      justify-content: center;
     }
   }
 </style>

@@ -7,7 +7,6 @@ TODO:
 - Screen capture
 - Build and release
 - Link to Google Play
-- AdMob
 
 ## Development
 

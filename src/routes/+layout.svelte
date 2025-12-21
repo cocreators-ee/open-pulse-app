@@ -14,22 +14,21 @@
   import Settings from '$lib/assets/lucide/settings.svg?component';
   import Cross from '$lib/assets/lucide/x.svg?component';
   import Check from '$lib/assets/lucide/check.svg?component';
+  import BannerAd from '$lib/BannerAd.svelte';
 
   let { children } = $props();
   let currentPath = $derived(page.url.pathname);
 
   async function allowAds() {
-    app.showAds = true;
     app.showAdConsent = false;
 
-    await app.save()
+    await app.enableAds()
   }
 
   async function disallowAds() {
-    app.showAds = false;
     app.showAdConsent = false;
 
-    await app.save()
+    await app.disableAds()
   }
 
   async function doBuyMeACoffee() {
@@ -301,9 +300,9 @@
   </div>
 {/if}
 
-{#if app.showAds }
+{#if app.showAds && app.adInitComplete }
   <div class="ads">
-    Ads go here
+    <BannerAd />
   </div>
 {/if}
 
