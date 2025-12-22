@@ -1,4 +1,4 @@
-exclude: ^(.svelte-kit/|build/|node_modules/|\.idea/)
+exclude: ^(.svelte-kit/|build/|node_modules/|\.idea/|fastlane/metadata)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0

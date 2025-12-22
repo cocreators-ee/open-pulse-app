@@ -1,0 +1,21 @@
+Stay in sync with your pulse wherever you want, Open Pulse connects instantly to any BLE‑compatible heart rate strap or watch and shows you real‑time data at a glance.
+
+Key features:
+- Live heart rate display: BPM reported from your device in real time.
+- Battery indicator: See remaining battery on your sensor, so you don't get caught unprepared.
+- Bluetooth Low Energy connectivity: Fast, low-energy pairing with most popular heart-rate monitors.
+- Open Source & Transparent: The app's source code is freely available on GitHub, so it can be reviewed by anyone, and you can contribute.
+- Non-intrusive ads: Optional banner ads at the bottom of the screen, UI designed around them. Don't like them? Just say no.
+- Simple UI: Clean, distraction-free interface to make it easy for you to see what you need during your workout.
+
+How it works:
+- Turn on Bluetooth and launch Open Pulse
+- Scan for nearby heart‑rate sensors with Bluetooth LE
+- Tap your device to connect
+- Monitor your BPM and battery levels
+
+The app remembers your selected device, detects issues with connectivity, reports them, and will automatically try to reconnect.
+
+Why choose Open Pulse:
+- Built with ❤️ from Estonia: Built by Cocreators OÜ, a small Estonian company focused on quality software. You'll be protected by GDPR regardless of where you are.
+- No subscriptions, no nonsense: No need to accept Terms of Service, no signups, no payment required. Just install and connect to your device.

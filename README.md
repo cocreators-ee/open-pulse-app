@@ -1,10 +1,7 @@
-# Heart Rate app
+# Open Pulse: BLE heart rate app
 
 Open Source application to connect to your Bluetooth Low Energy heart rate monitor on a mobile device.
 
-TODO:
-
-- Screen capture
 - Build and release
 - Link to Google Play
 
