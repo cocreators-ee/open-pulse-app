@@ -5,6 +5,11 @@
   color: $text-light;
 }
 
+html {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 body, html {
   font-family: 'Merriweather Sans Variable', sans-serif;
   font-size: 1rem;

@@ -6,6 +6,7 @@
   let circle: HTMLDivElement;
   let animationFrameHandle: number | undefined = undefined;
   let nextPulse = 0;
+  let lastPulse = 0;
   const HR_MIN = 80;
 
   function pulseSize(pulse: number) {
@@ -33,7 +34,9 @@
     circle.style.width = `${size}px`;
     circle.style.height = `${size}px`;
 
-    if (now > nextPulse && (app.currentHeartRate ?? 0) > 0) {
+    let sinceLast = now - lastPulse
+
+    if (now > nextPulse && (app.currentHeartRate ?? 0) > 0 && sinceLast > 25) {
       if (!circle.classList.contains('pulse')) {
         circle.classList.add('pulse');
 
@@ -47,6 +50,7 @@
   }
 
   function onAnimationEnd() {
+    lastPulse = Date.now()
     circle.classList.remove('pulse');
   }
 
@@ -142,7 +146,7 @@
   }
 
   :global(.circle.pulse) {
-    animation-duration: 200ms;
+    animation-duration: 150ms;
     animation-iteration-count: 1;
     animation-name: pulse;
     animation-timing-function: ease-in-out;

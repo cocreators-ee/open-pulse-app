@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_name">Free Pulse</string>
-  <string name="title_activity_main">Free Pulse</string>
+  <string name="app_name">Open Pulse</string>
+  <string name="title_activity_main">Open Pulse</string>
   <string name="package_name">ee.cocreators.hrapp</string>
   <string name="custom_url_scheme">ee.cocreators.hrapp</string>
   <string name="admob_app_id">ca-app-pub-5661191480452595~5594369690</string>

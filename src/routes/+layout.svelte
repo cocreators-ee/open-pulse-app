@@ -318,12 +318,9 @@
   }
 
   nav {
-    $top-status-bar: 32px;
-
     display: flex;
     flex-direction: row;
     background: $blue-dark;
-    margin-top: $top-status-bar;
 
     .nav-button {
       $size: 48px;

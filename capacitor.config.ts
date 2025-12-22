@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli"
 
 const config: CapacitorConfig = {
   appId: "ee.cocreators.hrapp",
-  appName: "Free Pulse",
+  appName: "Open Pulse",
   webDir: "build",
 }
 

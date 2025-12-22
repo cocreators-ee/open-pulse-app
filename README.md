@@ -51,7 +51,7 @@ wanted or needs re-thinking or if you should just make a fork for yourself.
 ## License
 
 ```
-Heart Rate monitor
+Open Pulse: BLE heart rate monitor
 Copyright ©️ 2025  Cocreators OÜ
 
 This program is free software; you can redistribute it and/or
