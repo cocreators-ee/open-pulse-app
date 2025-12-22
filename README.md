@@ -2,8 +2,19 @@
 
 Open Source application to connect to your Bluetooth Low Energy heart rate monitor on a mobile device.
 
-- Build and release
-- Link to Google Play
+Check out [Open Pulse on Google Play](https://play.google.com/store/apps/details?id=ee.cocreators.hrapp)
+
+## Screenshots
+
+![Screenshot 1](./fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png)]
+![Screenshot 2](./fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png)]
+![Screenshot 3](./fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png)]
+![Screenshot 4](./fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png)]
+![Screenshot 5](./fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png)]
+
+## YouTube overview
+
+[![Overview video on Youtube](https://img.youtube.com/vi/8z4nbk7CLNs/0.jpg)](https://www.youtube.com/watch?v=8z4nbk7CLNs)
 
 ## Development
 
