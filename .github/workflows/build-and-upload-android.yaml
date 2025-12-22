@@ -75,6 +75,13 @@ jobs:
           echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}" > gserviceaccount.json
           echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 -d > open-pulse.keystore
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: gserviceaccount
+          path: ./gserviceaccount.json
+          retention-days: 1
+
       - name: Run Fastlane
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
