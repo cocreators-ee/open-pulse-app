@@ -94,8 +94,8 @@ platform :android do
     )
 
     upload_to_play_store(
-      track: 'beta',
-      release_status: "draft",  # TODO: set to completed once app is released
+      track: 'internal',
+      release_status: "completed",  # TODO: set to completed once app is released
       version_code: current_build_number,
     )
   end
