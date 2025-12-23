@@ -6,11 +6,11 @@ Check out [Open Pulse on Google Play](https://play.google.com/store/apps/details
 
 ## Screenshots
 
-![Screenshot 1](./fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png)]
-![Screenshot 2](./fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png)]
-![Screenshot 3](./fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png)]
-![Screenshot 4](./fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png)]
-![Screenshot 5](./fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png)]
+![Screenshot 1](./fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png)
+![Screenshot 2](./fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png)
+![Screenshot 3](./fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png)
+![Screenshot 4](./fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png)
+![Screenshot 5](./fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png)
 
 ## YouTube overview
 
