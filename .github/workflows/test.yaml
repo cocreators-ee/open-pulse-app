@@ -31,7 +31,7 @@ jobs:
           echo github.env=${{ github.env }}
 
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            sed -Ei 's@(\w+)versionName.+$@\1versionName "${{ github.ref_name }}"@g' android/app/build.gradle
+            sed -Ei 's@(\s+)versionName.+$@\1versionName "${{ github.ref_name }}"@g' android/app/build.gradle
             echo "lane=android beta" >> $GITHUB_OUTPUT
           else
             echo "lane=android internal" >> $GITHUB_OUTPUT
