@@ -30,7 +30,12 @@ jobs:
           echo github.workspace=${{ github.workspace }}
           echo github.env=${{ github.env }}
 
-          echo "lane=android test" >> $GITHUB_OUTPUT
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            # TODO: Get tag version number and update android/app/build.gradle
+            echo "lane=android beta" >> $GITHUB_OUTPUT
+          else
+            echo "lane=android internal" >> $GITHUB_OUTPUT
+          fi
 
       - name: Fastlane mock
         run: |
