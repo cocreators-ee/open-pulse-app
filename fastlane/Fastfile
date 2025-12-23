@@ -14,6 +14,7 @@
 # update_fastlane
 
 default_platform(:android)
+android_dir = File.expand_path('../android')
 
 #
 #  Figure out the latest google play version code
@@ -98,8 +99,6 @@ end
 #
 
 platform :android do
-  android_dir = File.expand_path('../android')
-
   desc "Verify changelog exists"
   private_lane :verify_changelog_exists do |version_code: |
     changelog_path = "android/metadata/en-US/changelogs/#{version_code}.txt"
