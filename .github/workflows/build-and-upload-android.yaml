@@ -1,10 +1,26 @@
 name: Build and upload to Google Play
 
 on:
+  # Manual triggers
   workflow_dispatch:
   push:
+    # All tags should trigger this
     tags:
-      - "*"
+      - *
+    # Any push to paths that should affect the build in some way
+    paths:
+      - .github/workflows/build-and-upload-android.yaml
+      - android
+      - fastlane
+      - Gemfile
+      - src
+      - static
+      - capacitor.config.ts
+      - bun.lock
+      - package.json
+      - svelte.config.js
+      - tsconfig.json
+      - vite.config.ts
 
 env:
   DOCKER_BUILDKIT: 1
@@ -77,6 +93,21 @@ jobs:
         env:
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
 
+      - name: Fastlane preparation
+        run: |
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            # If trigger was a tag
+            # Update version number
+            sed -Ei 's@(\s+)versionName.+$@\1versionName "${{ github.ref_name }}"@g' android/app/build.gradle
+            # This should be published to beta
+            echo "lane=android beta" >> $GITHUB_OUTPUT
+            echo "Submitting to Google Play store beta as ${{ github.ref_name }}"
+          else
+            # This should be published to internal testing
+            echo "lane=android internal" >> $GITHUB_OUTPUT
+            echo "Submitting to Google Play store internal testing"
+          fi
+
       - name: Run Fastlane
         uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         env:
@@ -85,7 +116,7 @@ jobs:
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
         with:
-          lane: android beta
+          lane: ${{ steps.test.outputs.lane }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0

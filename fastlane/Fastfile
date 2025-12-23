@@ -15,7 +15,9 @@
 
 default_platform(:android)
 
-# Figure out the latest google play version code
+#
+#  Figure out the latest google play version code
+#
 def latest_googleplay_version_code
   begin
     productionVersionCodes = google_play_track_version_codes(track: 'production')
@@ -53,12 +55,47 @@ def latest_googleplay_version_code
   return versionCodes.max
 end
 
+#
+# Update version code
+#
+
 def set_version_code(new_version_code)
   file_name = File.expand_path("../android/app/build.gradle")
   current_content = File.read(file_name)
   new_content = current_content.gsub(/(versionCode\s[0-9]+)/, "versionCode #{new_version_code}")
   File.write(file_name, new_content)
 end
+
+#
+# Build and release logic
+#
+def build_and_release(track)
+  # Get previous build number and increment
+  current_build_number = latest_googleplay_version_code() + 10
+  set_version_code(current_build_number)
+
+  gradle(
+    task: "clean bundleRelease",
+    project_dir: android_dir,
+    properties: {
+      'android.injected.signing.store.file' => File.expand_path('../open-pulse.keystore'),
+      'android.injected.signing.store.password' => ENV['KEYSTORE_STORE_PASSWORD'],
+      'android.injected.signing.key.alias' => ENV['KEYSTORE_KEY_ALIAS'],
+      'android.injected.signing.key.password' => ENV['KEYSTORE_KEY_PASSWORD'],
+      "android.injected.version.code" => current_build_number,
+    }
+  )
+
+  upload_to_play_store(
+    track: track,
+    release_status: "completed",  # TODO: set to completed once app is released
+    version_code: current_build_number,
+  )
+end
+
+#
+# Android platform lanes
+#
 
 platform :android do
   android_dir = File.expand_path('../android')
@@ -75,34 +112,23 @@ platform :android do
       gradle(task: "test", project_dir: android_dir)
   end
 
-  desc "Submit a new Beta Build to Play Store Beta"
-  lane :beta do
-    # Get previous build number and increment
-    current_build_number = latest_googleplay_version_code() + 10
-    set_version_code(current_build_number)
-
-    gradle(
-      task: "clean bundleRelease",
-      project_dir: android_dir,
-      properties: {
-        'android.injected.signing.store.file' => File.expand_path('../open-pulse.keystore'),
-        'android.injected.signing.store.password' => ENV['KEYSTORE_STORE_PASSWORD'],
-        'android.injected.signing.key.alias' => ENV['KEYSTORE_KEY_ALIAS'],
-        'android.injected.signing.key.password' => ENV['KEYSTORE_KEY_PASSWORD'],
-        "android.injected.version.code" => current_build_number,
-      }
-    )
-
-    upload_to_play_store(
-      track: 'internal',
-      release_status: "completed",  # TODO: set to completed once app is released
-      version_code: current_build_number,
-    )
+  desc "Submit a new build to Play Store internal testing"
+  lane :internal do
+    build_and_release("internal")
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease", project_dir: android_dir)
-    upload_to_play_store
+  desc "Submit a new build to Play Store beta testing"
+  lane :beta do
+    build_and_release("beta")
+  end
+
+  desc "Submit a new build to Play Store alpha testing"
+  lane :alpha do
+    build_and_release("alpha")
+  end
+
+  desc "Submit a new build to Play store production"
+  lane :production do
+    build_and_release("production")
   end
 end
