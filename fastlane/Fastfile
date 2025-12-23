@@ -71,6 +71,8 @@ end
 # Build and release logic
 #
 def build_and_release(track)
+  android_dir = File.expand_path('../android')
+
   # Get previous build number and increment
   current_build_number = latest_googleplay_version_code() + 10
   set_version_code(current_build_number)
@@ -99,6 +101,8 @@ end
 #
 
 platform :android do
+  android_dir = File.expand_path('../android')
+
   desc "Verify changelog exists"
   private_lane :verify_changelog_exists do |version_code: |
     changelog_path = "android/metadata/en-US/changelogs/#{version_code}.txt"
