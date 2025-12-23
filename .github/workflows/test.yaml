@@ -1,4 +1,4 @@
-name: Build and upload to Google Play
+name: Test
 
 on:
   workflow_dispatch:
@@ -31,11 +31,13 @@ jobs:
           echo github.env=${{ github.env }}
 
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            # TODO: Get tag version number and update android/app/build.gradle
+            sed -Ei 's@(\w+)versionName.+$@\1versionName "${{ github.ref_name }}"@g'
             echo "lane=android beta" >> $GITHUB_OUTPUT
           else
             echo "lane=android internal" >> $GITHUB_OUTPUT
           fi
+
+          cat android/app/build.gradle
 
       - name: Fastlane mock
         run: |
