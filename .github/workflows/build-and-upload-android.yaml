@@ -94,6 +94,7 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
 
       - name: Fastlane preparation
+        id: fastlanePrep
         run: |
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             # If trigger was a tag
@@ -116,7 +117,7 @@ jobs:
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
         with:
-          lane: ${{ steps.test.outputs.lane }}
+          lane: ${{ steps.fastlanePrep.outputs.lane }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
