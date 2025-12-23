@@ -6,7 +6,7 @@ on:
   push:
     # All tags should trigger this
     tags:
-      - *
+      - "*"
     # Any push to paths that should affect the build in some way
     paths:
       - .github/workflows/build-and-upload-android.yaml
