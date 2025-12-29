@@ -8,35 +8,43 @@
     BannerAdSize
   } from '@capacitor-community/admob';
   import { onDestroy, onMount } from 'svelte';
+  import { app } from '$lib/app.svelte';
+  import { errorToString } from '$lib/utils';
 
   let interval: NodeJS.Timeout | undefined = undefined
   const AD_INTERVAL = 60_000
 
   async function banner(): Promise<void> {
-    await AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
-      // Subscribe Banner Event Listener
-    });
+    try {
+      await app.initAds()
 
-    await AdMob.addListener(
-      BannerAdPluginEvents.SizeChanged,
-      (_size: AdMobBannerSize) => {
-        // Subscribe Change Banner Size
-      }
-    );
+      await AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
+        // Subscribe Banner Event Listener
+      });
 
-    const options: BannerAdOptions = {
-      adId: 'ca-app-pub-5661191480452595/9221966971',
-      adSize: BannerAdSize.BANNER,
-      position: BannerAdPosition.BOTTOM_CENTER,
-      margin: 0
-      // isTesting: true
-      // npa: true
-    };
+      await AdMob.addListener(
+        BannerAdPluginEvents.SizeChanged,
+        (_size: AdMobBannerSize) => {
+          // Subscribe Change Banner Size
+        }
+      );
 
-    await AdMob.showBanner(options);
+      const options: BannerAdOptions = {
+        adId: 'ca-app-pub-5661191480452595/9221966971',
+        adSize: BannerAdSize.BANNER,
+        position: BannerAdPosition.BOTTOM_CENTER,
+        margin: 0
+        // isTesting: true
+        // npa: true
+      };
+
+      await AdMob.showBanner(options);
+    } catch(e) {
+      console.error("Error showing banner:", errorToString(e as Error))
+    }
   }
 
-  onMount(() => {
+  onMount(async () => {
     banner()
     interval = setInterval(banner, AD_INTERVAL)
   })

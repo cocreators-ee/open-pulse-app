@@ -5,10 +5,18 @@
   import { buyMeACoffee, openLink } from '$lib/utils.ts';
 
   import '@fontsource-variable/merriweather-sans';
+  import '@fontsource/monaspace-neon/200.css';
+  import '@fontsource/monaspace-neon/300.css';
+  import '@fontsource/monaspace-neon/400.css';
+  import '@fontsource/monaspace-neon/500.css';
+  import '@fontsource/monaspace-neon/600.css';
+  import '@fontsource/monaspace-neon/700.css';
+  import '@fontsource/monaspace-neon/800.css';
   import '$style/setup.scss';
 
   import Bluetooth from '$lib/assets/lucide/bluetooth.svg?component';
   import BluetoothConnected from '$lib/assets/lucide/bluetooth-connected.svg?component';
+  import BookHeart from '$lib/assets/lucide/book-heart.svg?component';
   import HeartPulse from '$lib/assets/lucide/heart-pulse.svg?component';
   import Info from '$lib/assets/lucide/info.svg?component';
   import Settings from '$lib/assets/lucide/settings.svg?component';
@@ -22,20 +30,20 @@
   async function allowAds() {
     app.showAdConsent = false;
 
-    await app.enableAds()
+    await app.enableAds();
   }
 
   async function disallowAds() {
     app.showAdConsent = false;
 
-    await app.disableAds()
+    await app.disableAds();
   }
 
   async function doBuyMeACoffee() {
     app.showAds = false;
     app.showAdConsent = false;
 
-    await app.save()
+    await app.save();
     await buyMeACoffee();
   }
 
@@ -74,7 +82,6 @@
        tabindex="0">
     <HeartPulse />
   </div>
-  <!--
   <div class="nav-button"
        class:selected={currentPath === "/history/"}
        class:disabled={app.selectedDevice === undefined}
@@ -84,7 +91,6 @@
        tabindex="0">
     <BookHeart />
   </div>
-  -->
   <div class="nav-button"
        class:selected={currentPath === "/about/"}
        onclick={() => goto("/about/")}
@@ -145,8 +151,13 @@
         more: <a href="https://www.google.com/policies/privacy/partners/" onclick={openLink}>How
           Google uses data when you use our partners’ sites or apps</a>. If you do not like this, turn off the
         ads.</p>
-      <p>You can customize some of the ad personalization settings for Google at <a href="https://adssettings.google.com/u/0/authenticated" onclick={openLink}>adssettings.google.com/u/0/authenticated</a></p>
-      <p>Read more about how Google collects data about you at <a href="https://policies.google.com/privacy" onclick={openLink}>policies.google.com/privacy</a> and <a href="https://policies.google.com/technologies/partner-sites" onclick={openLink}>policies.google.com/technologies/partner-sites</a></p>
+      <p>You can customize some of the ad personalization settings for Google at <a
+        href="https://adssettings.google.com/u/0/authenticated" onclick={openLink}>adssettings.google.com/u/0/authenticated</a>
+      </p>
+      <p>Read more about how Google collects data about you at <a href="https://policies.google.com/privacy"
+                                                                  onclick={openLink}>policies.google.com/privacy</a>
+        and <a href="https://policies.google.com/technologies/partner-sites" onclick={openLink}>policies.google.com/technologies/partner-sites</a>
+      </p>
       <p>Cocreators does not get any of the data AdMob Google Inc. collects about you.</p>
       <p>If you send us a tip via Buy Me A Coffee, they may also collect information about you according to <a
         href="https://buymeacoffee.com/privacy-policy" onclick={openLink}>their privacy policy</a>.</p>
@@ -267,11 +278,18 @@
         required by law, or if no longer required for the purposes for which we collected it.</p>
 
       <h3>Is Cocreators collecting Personal Data about children?</h3>
-      <p>Cocreators does not knowingly collect, maintain, or use Personal Data about children under the age of 13. The service is not targeted towards children, and children under 13 are not permitted to enable ads which enables tracking.</p>
+      <p>Cocreators does not knowingly collect, maintain, or use Personal Data about children under the age of
+        13. The service is not targeted towards children, and children under 13 are not permitted to enable
+        ads which enables tracking.</p>
 
       <h3>Is my data transferred abroad?</h3>
-      <p>Cocreators is an Estonian company, and Estonia is a member of the European Union. Cocreators strives to store all its data within the EU, and avoids storing data outside of the EU where possible, however in certain scenarios some Personal Data may be in other countries, such as the United States. When your Personal Data is transferred to those countries, it is protected as described in this Privacy Policy. An example of such transfer would be in case of AdMob - our ad provider.</p>
-      <p>If you feel we're needlessly transferring your data abroad and have better solutions to recommend to us, please let us know, we're always looking to improve.</p>
+      <p>Cocreators is an Estonian company, and Estonia is a member of the European Union. Cocreators strives
+        to store all its data within the EU, and avoids storing data outside of the EU where possible, however
+        in certain scenarios some Personal Data may be in other countries, such as the United States. When
+        your Personal Data is transferred to those countries, it is protected as described in this Privacy
+        Policy. An example of such transfer would be in case of AdMob - our ad provider.</p>
+      <p>If you feel we're needlessly transferring your data abroad and have better solutions to recommend to
+        us, please let us know, we're always looking to improve.</p>
 
       <p class="thanks">Thanks for reading all the way through this, you're a champ 👍</p>
 

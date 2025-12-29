@@ -5,7 +5,7 @@
 
   onMount(async () => {
     await app.waitUntilLoaded();
-    console.log('PAGE LOAD', app.selectedDevice);
+    // console.log('PAGE LOAD', app.selectedDevice);
     if (app.selectedDevice !== undefined) {
       goto('/monitor/');
     } else {

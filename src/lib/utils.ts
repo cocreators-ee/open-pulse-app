@@ -13,3 +13,8 @@ export async function openLink(evt) {
   const url = evt.target.href
   await Browser.open({ url })
 }
+
+export function errorToString(err: Error): string {
+  let type = typeof err
+  return `${type} ${err.name}: ${err.message}`
+}

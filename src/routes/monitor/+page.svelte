@@ -108,6 +108,8 @@
     justify-content: center;
     position: relative;
 
+    scale: min(calc((100vh - 0px) / 720px), 1);
+
     .hr-number {
       font-size: 2.25rem;
       font-weight: bold;

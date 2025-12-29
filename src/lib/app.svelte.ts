@@ -2,16 +2,16 @@ import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob"
 import { BleClient, numberToUUID, type ScanResult } from "@capacitor-community/bluetooth-le"
 import { Preferences } from "@capacitor/preferences"
 import { goto } from "$app/navigation"
-import { sleep } from "$lib/utils"
+import { errorToString, sleep } from "$lib/utils"
 
 type HRLog = {
-  time: number
+  date: Date
   value: number
 }
 
+export const HISTORY_MAX_LENGTH = 3 * 60
 const SCAN_DURATION = 15_000
 const MS_BETWEEN_POLLS = 30_000
-const HISTORY_MAX_LENGTH = 3 * 60
 const HEART_RATE_SERVICE = numberToUUID(0x180d)
 const HEART_RATE_MEASUREMENT_CHARACTERISTIC = "00002a37-0000-1000-8000-00805f9b34fb"
 // const BODY_SENSOR_LOCATION_CHARACTERISTIC = "00002a38-0000-1000-8000-00805f9b34fb"
@@ -151,6 +151,18 @@ class App {
     window.location.reload()
   }
 
+  async resetHeartRateHistory() {
+    const noHistory = []
+    const start = Date.now() - HISTORY_MAX_LENGTH * 1_000
+    for (let i = 0; i < HISTORY_MAX_LENGTH; i++) {
+      noHistory.push({
+        date: new Date(start + i * 1_000),
+        value: null,
+      })
+    }
+    this.heartRateHistory = noHistory
+  }
+
   async setState(state: State) {
     for (let key in state) {
       // @ts-ignore
@@ -257,10 +269,14 @@ class App {
       this.connected = true
       this.connecting = false
     } catch (e) {
-      console.log("Connection failed", e)
+      console.warn("Connection failed:", errorToString(e as Error))
       // Retry
       this.retryTimeout = setTimeout(() => this.connect(result), 2_500)
       return
+    }
+
+    if (this.heartRateHistory.length === 0) {
+      await this.resetHeartRateHistory()
     }
 
     await BleClient.startNotifications(
@@ -303,13 +319,13 @@ class App {
         HEART_RATE_MEASUREMENT_CHARACTERISTIC
       )
     } catch (e) {
-      console.log("Error stopping notifications", e)
+      console.error("Error stopping notifications:", errorToString(e as Error))
     }
 
     try {
       await BleClient.disconnect(this.selectedDevice!.device.deviceId)
     } catch (e) {
-      console.log("Error disconnecting", e)
+      console.error("Error disconnecting:", errorToString(e as Error))
     }
 
     // If we still have a selected device, try reconnecting
@@ -334,13 +350,22 @@ class App {
     // this.currentBodyLocation = result.getUint8(0)
     // console.log("body sensor location", this.currentBodyLocation)
 
-    const battery = await BleClient.read(
-      this.selectedDevice!.device.deviceId,
-      BATTERY_SERVICE,
-      BATTERY_CHARACTERISTIC
-    )
-    this.currentBatteryLevel = battery.getUint8(0)
-    // console.log("battery level", this.currentBatteryLevel)
+    try {
+      const battery = await BleClient.read(
+        this.selectedDevice!.device.deviceId,
+        BATTERY_SERVICE,
+        BATTERY_CHARACTERISTIC
+      )
+      this.currentBatteryLevel = battery.getUint8(0)
+      // console.log("battery level", this.currentBatteryLevel)
+    } catch (e: Error) {
+      const msg: string = e.toString()
+      if (msg.includes("Not connected to device")) {
+        await this.onDisconnect(true)
+      } else {
+        console.error("Error polling device state:", e)
+      }
+    }
   }
 
   async stopPolling() {
@@ -364,18 +389,19 @@ class App {
 
   // New heart rate value received from connected device
   async onHeartRateUpdate(value: DataView) {
-    const now = Date.now()
-    this.currentHeartRate = parseHeartRate(value)
+    const now = new Date()
+    const newValue = parseHeartRate(value)
+    this.currentHeartRate = newValue
     // console.log("current heart rate", this.currentHeartRate)
 
     this.heartRateHistory = this.heartRateHistory
       .concat([
         {
-          time: now,
-          value: this.currentHeartRate,
+          date: now,
+          value: newValue > 0 ? newValue : null,
         },
       ])
-      .slice(0, HISTORY_MAX_LENGTH)
+      .slice(-HISTORY_MAX_LENGTH)
   }
 }
 
