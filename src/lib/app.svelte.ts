@@ -87,10 +87,6 @@ class App {
       // Start connecting, but don't wait for it
       this.connect(this.selectedDevice).then(() => {})
     }
-
-    if (this.showAds) {
-      this.initAds().then(() => {})
-    }
   }
 
   async enableAds() {
@@ -175,38 +171,50 @@ class App {
       return
     }
 
-    await AdMob.initialize()
+    try {
+      // console.debug("Initializing AdMob")
+      await AdMob.initialize()
 
-    const [trackingInfo, consentInfo] = await Promise.all([
-      AdMob.trackingAuthorizationStatus(),
-      AdMob.requestConsentInfo(),
-    ])
+      // console.debug("Getting AdMob statuses")
+      const [trackingInfo, consentInfo] = await Promise.all([
+        AdMob.trackingAuthorizationStatus(),
+        AdMob.requestConsentInfo(),
+      ])
+      // console.debug("AdMob tracking info:", trackingInfo)
+      // console.debug("AdMob consent info:", consentInfo)
 
-    if (trackingInfo.status === "notDetermined") {
-      /**
-       * If you want to explain TrackingAuthorization before showing the iOS dialog,
-       * you can show the modal here.
-       * ex)
-       * const modal = await this.modalCtrl.create({
-       *   component: RequestTrackingPage,
-       * });
-       * await modal.present();
-       * await modal.onDidDismiss();  // Wait for close modal
-       **/
+      if (trackingInfo.status === "notDetermined") {
+        /**
+         * If you want to explain TrackingAuthorization before showing the iOS dialog,
+         * you can show the modal here.
+         * ex)
+         * const modal = await this.modalCtrl.create({
+         *   component: RequestTrackingPage,
+         * });
+         * await modal.present();
+         * await modal.onDidDismiss();  // Wait for close modal
+         **/
 
-      await AdMob.requestTrackingAuthorization()
+        // console.debug("Requesting tracking authorization")
+        await AdMob.requestTrackingAuthorization()
+      }
+
+      const authorizationStatus = await AdMob.trackingAuthorizationStatus()
+      // console.debug("AdMob authorization status:", authorizationStatus)
+
+      if (
+        authorizationStatus.status === "authorized" &&
+        consentInfo.isConsentFormAvailable &&
+        consentInfo.status === AdmobConsentStatus.REQUIRED
+      ) {
+        // console.debug("Showing AdMob consent form")
+        await AdMob.showConsentForm()
+      }
+
+      this.adInitComplete = true
+    } catch (e) {
+      console.error("Ad init failed:", errorToString(e as Error))
     }
-
-    const authorizationStatus = await AdMob.trackingAuthorizationStatus()
-    if (
-      authorizationStatus.status === "authorized" &&
-      consentInfo.isConsentFormAvailable &&
-      consentInfo.status === AdmobConsentStatus.REQUIRED
-    ) {
-      await AdMob.showConsentForm()
-    }
-
-    this.adInitComplete = true
   }
 
   async initBluetooth() {

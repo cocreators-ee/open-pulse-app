@@ -33,8 +33,8 @@
         adId: 'ca-app-pub-5661191480452595/9221966971',
         adSize: BannerAdSize.BANNER,
         position: BannerAdPosition.BOTTOM_CENTER,
-        margin: 0
-        // isTesting: true
+        // margin: 8,
+        // isTesting: true,
         // npa: true
       };
 
@@ -44,8 +44,8 @@
     }
   }
 
-  onMount(async () => {
-    banner()
+  onMount(() => {
+    banner().then(() => {})
     interval = setInterval(banner, AD_INTERVAL)
   })
 
@@ -53,5 +53,6 @@
     if (interval !== undefined) {
       clearInterval(interval)
     }
+    AdMob.removeBanner().then(() => {})
   })
 </script>

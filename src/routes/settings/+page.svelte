@@ -2,21 +2,24 @@
   import { app } from '$lib/app.svelte.js';
   import Toggle from '$lib/Toggle.svelte';
   import { AdMob } from '@capacitor-community/admob';
+  import { AdvertisingId } from '@capacitor-community/advertising-id';
 
   function showPrivacyOptionsForm() {
-      AdMob.showPrivacyOptionsForm();
+    AdMob.showPrivacyOptionsForm();
   }
+
 </script>
 
 <section>
   <h1>Settings</h1>
   <div class="setting">
     <div class="input">
-      <input type="number"
+      <input type="range"
              bind:value={app.hrMax}
              min="140"
              max="220"
       />
+      {app.hrMax}
     </div>
     <p>
       Heart rate maximum. Used for determining low, medium, and high heart rate.
@@ -30,9 +33,22 @@
       Show me ads to support the development of Open Source software like this.
     </p>
   </div>
+  {#if app.showAds}
   <div class="setting centered">
     <button onclick={showPrivacyOptionsForm}>Show AdMob privacy options</button>
   </div>
+  <div class="setting centered ad-info">
+    {#await AdvertisingId.getAdvertisingId()}
+      &nbsp;
+    {:then advertisingIdInfo }
+      <p>Advertising consent: {advertisingIdInfo.status}</p>
+      <span>Your advertising ID:</span>
+      <span>{advertisingIdInfo.id}</span>
+    {:catch _}
+      &nbsp;
+    {/await}
+  </div>
+  {/if}
   <div class="danger">
     <p>If something goes wrong and you want to reset the application state, you can use this.</p>
     <div class="setting centered">
@@ -58,7 +74,7 @@
 
     .input {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       width: 7rem;
@@ -66,6 +82,11 @@
 
     &.centered {
       justify-content: center;
+    }
+
+    &.ad-info {
+      flex-direction: column;
+      gap: $spacing-1;
     }
   }
 

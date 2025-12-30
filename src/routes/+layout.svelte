@@ -109,7 +109,7 @@
   </div>
 </nav>
 
-<main>
+<main class:no-ads={!app.showAds}>
   {@render children()}
 </main>
 
@@ -318,14 +318,14 @@
   </div>
 {/if}
 
-{#if app.showAds && app.adInitComplete }
-  <div class="ads">
-    <BannerAd />
-  </div>
+{#if app.showAds }
+  <BannerAd />
 {/if}
 
 <style lang="scss">
   @use "variables" as *;
+
+  $ads-height: 100px;
 
   :global(body, html) {
     display: flex;
@@ -390,8 +390,12 @@
   }
 
   main {
-    padding: $spacing-2 $spacing-2;
+    padding: $spacing-2 $spacing-2 calc(env(safe-area-inset-bottom) + $ads-height) $spacing-2;
     flex-grow: 1;
+
+    &.no-ads {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
   }
 
   .dialog-background {
@@ -451,17 +455,6 @@
         margin: $spacing-4 0;
       }
     }
-  }
-
-  .ads {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    color: #000;
-    height: 100px;
-    justify-self: flex-end;
   }
 
   :global(button.show-ads svg) {
