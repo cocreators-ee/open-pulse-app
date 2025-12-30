@@ -3,11 +3,11 @@
   import Toggle from '$lib/Toggle.svelte';
   import { AdMob } from '@capacitor-community/admob';
   import { AdvertisingId } from '@capacitor-community/advertising-id';
+  import { App } from '@capacitor/app';
 
   function showPrivacyOptionsForm() {
     AdMob.showPrivacyOptionsForm();
   }
-
 </script>
 
 <section>
@@ -34,26 +34,36 @@
     </p>
   </div>
   {#if app.showAds}
-  <div class="setting centered">
-    <button onclick={showPrivacyOptionsForm}>Show AdMob privacy options</button>
-  </div>
-  <div class="setting centered ad-info">
-    {#await AdvertisingId.getAdvertisingId()}
-      &nbsp;
-    {:then advertisingIdInfo }
-      <p>Advertising consent: {advertisingIdInfo.status}</p>
-      <span>Your advertising ID:</span>
-      <span>{advertisingIdInfo.id}</span>
-    {:catch _}
-      &nbsp;
-    {/await}
-  </div>
+    <div class="setting centered">
+      <button onclick={showPrivacyOptionsForm}>Show AdMob privacy options</button>
+    </div>
+    <div class="setting centered info">
+      {#await AdvertisingId.getAdvertisingId()}
+        &nbsp;
+      {:then advertisingIdInfo }
+        <p>Advertising consent: {advertisingIdInfo.status}</p>
+        <span>Your advertising ID:</span>
+        <span>{advertisingIdInfo.id}</span>
+      {:catch _}
+        &nbsp;
+      {/await}
+    </div>
   {/if}
   <div class="danger">
     <p>If something goes wrong and you want to reset the application state, you can use this.</p>
     <div class="setting centered">
       <button class="reset" onclick={() => app.reset()}>Reset application</button>
     </div>
+  </div>
+  <div class="setting centered info">
+    <h3>Application information</h3>
+    {#await App.getInfo()}
+      <span>Version</span>
+      <span>Build</span>
+    {:then info}
+      <span>Version {info.version}</span>
+      <span>Build {info.build}</span>
+    {/await}
   </div>
 </section>
 
@@ -84,7 +94,7 @@
       justify-content: center;
     }
 
-    &.ad-info {
+    &.info {
       flex-direction: column;
       gap: $spacing-1;
     }

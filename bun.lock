@@ -8,6 +8,7 @@
         "@capacitor-community/advertising-id": "^8.0.0",
         "@capacitor-community/bluetooth-le": "^7.3.0",
         "@capacitor/android": "^8.0.0",
+        "@capacitor/app": "^8.0.0",
         "@capacitor/browser": "^8.0.0",
         "@capacitor/cli": "^8.0.0",
         "@capacitor/core": "^8.0.0",
@@ -43,6 +44,8 @@
     "@capacitor-community/bluetooth-le": ["@capacitor-community/bluetooth-le@7.3.0", "", { "dependencies": { "@types/web-bluetooth": "^0.0.20" }, "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-QsM8jIlseTWnpEHdlzB5OxweNoxS9QDKUyQEX49IyeRCmi0uVMf4A8l6VPtyfT6wKUdWf4VrEZAED8UCOWW1DQ=="],
 
     "@capacitor/android": ["@capacitor/android@8.0.0", "", { "peerDependencies": { "@capacitor/core": "^8.0.0" } }, "sha512-FrBSvVAC5JuLaYHNyDnwQny0/SYnP+xDQbc/KA4wInmRkMXLDv22fkx9aBJIDrxjuUVd+jsRih4SAt8FgMEzCw=="],
+
+    "@capacitor/app": ["@capacitor/app@8.0.0", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-OwzIkUs4w433Bu9WWAEbEYngXEfJXZ9Wmdb8eoaqzYBgB0W9/3Ed/mh6sAYPNBAZlpyarmewgP7Nb+d3Vrh+xA=="],
 
     "@capacitor/browser": ["@capacitor/browser@8.0.0", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-xey7maszGABKuStvXDV4vXN+EzIyz0o7zlyzw4JKG6o/1GzqeqHqVuE+8Ux+Hks3DZji4LoriWZVgVF6mR6RGg=="],
 
